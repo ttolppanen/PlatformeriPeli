@@ -9,6 +9,10 @@ public class EnemyHealth : MonoBehaviour {
     public void TakeDamage(int damage)
     {
         health -= damage;
+        if (GetComponent<DMGFlash>() == null)
+        {
+            gameObject.AddComponent<DMGFlash>();
+        }
         if (health <= 0)
         {
             Destroy(gameObject);

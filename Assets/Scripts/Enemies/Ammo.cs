@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Ammo : MonoBehaviour {
 
+    public int damage;
     public float ammoWidth;
     Rigidbody2D rb;
 
@@ -25,7 +26,8 @@ public class Ammo : MonoBehaviour {
                     return;
                 }
             }
-            coll.gameObject.AddComponent<DMGFlash>();
+            //Take damage
+            coll.GetComponent<PlayerHealth>().TakeDamage(damage, transform.position, false);
         }
     }
 }
