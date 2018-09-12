@@ -3,7 +3,8 @@
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
-		_WhiteAmount("How little white, 1 is normal 2 is little..", Float) = 1
+		_WhiteAmount("How little white, 1 is white 100 is normal..", Float) = 1
+		_Color("Color", Vector) = (1, 1, 1)
 	}
 	SubShader
 	{
@@ -54,6 +55,7 @@
 				return o;
 			}
 			float _WhiteAmount;
+			float3 _Color;
 			
 
 			fixed4 frag (v2f i) : SV_Target
@@ -61,6 +63,9 @@
 				
 				fixed4 col = tex2D(_MainTex, i.uv);
 				col = float4(col.r + (1 - col.r) / _WhiteAmount, col.g + (1 - col.g) / _WhiteAmount, col.b + (1 - col.b) / _WhiteAmount, col.a);
+				col.r *= _Color.x;
+				col.g *= _Color.y;
+				col.b *= _Color.z;
 				return col;
 			}
 			ENDCG

@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour {
 
     public int health;
+    public int shieldAbsorb;
     public float knockBackForce;
+    public GameObject[] hearts = new GameObject[1];
     Rigidbody2D rb;
     Animator anim;
 
@@ -13,6 +15,7 @@ public class PlayerHealth : MonoBehaviour {
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        UpdateHearts();
     }
 
     public void TakeDamage(int damage, Vector2 enemyPosition, bool isMelee)
@@ -20,9 +23,9 @@ public class PlayerHealth : MonoBehaviour {
         float enemyToPlayerX = transform.position.x - enemyPosition.x;
         if (isMelee && anim.GetBool("Shielding") && (enemyToPlayerX / Mathf.Abs(enemyToPlayerX) != transform.localScale.x))
         {
-            if (damage / 2 > 0)
+            if (damage / shieldAbsorb > 0)
             {
-                health -= damage / 2;
+                health -= damage / shieldAbsorb;
                 if (GetComponent<DMGFlash>() == null)
                 {
                     gameObject.AddComponent<DMGFlash>();
@@ -57,9 +60,25 @@ public class PlayerHealth : MonoBehaviour {
                 rb.AddForce(knockBackForce * rb.mass * new Vector2(-1, 1).normalized, ForceMode2D.Impulse);
             }
         }
+        UpdateHearts();
         if (health <= 0)
         {
             Destroy(gameObject);
+        }
+    }
+
+    void UpdateHearts()
+    {
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i <= health - 1)
+            {
+                hearts[i].SetActive(true);
+            }
+            else
+            {
+                hearts[i].SetActive(false);
+            }
         }
     }
 }

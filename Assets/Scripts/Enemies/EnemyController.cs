@@ -35,7 +35,7 @@ public class EnemyController : MonoBehaviour {
             rb.velocity = Vector2.zero;
             return;
         }
-        if (!anim.GetBool("Hitting")) { //jos ei lyödä niin liikutaan...
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Hitting")) { //jos ei lyödä niin liikutaan...
             if (directionToPlayer.x >= 0)
             {
                 rb.AddForce(acceleration * rb.mass * Time.deltaTime * Vector2.right);
