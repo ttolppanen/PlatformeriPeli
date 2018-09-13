@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class EnemyAnimationHelper : MonoBehaviour {
 
-    public Collider2D hitBox;
+    public GameObject hitBox;
 
-    void ToggleHitBox()
+    void TurnOnHitBox()
     {
-        hitBox.enabled = !hitBox.enabled;
+        hitBox.SetActive(true);
+    }
+    void TurnOffHitBox()
+    {
+        hitBox.SetActive(false);
     }
 }

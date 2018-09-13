@@ -142,4 +142,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3158d96465757c541b3e9047cfb35ea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
   ammoWidth: 0.2

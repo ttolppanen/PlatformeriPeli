@@ -18,9 +18,9 @@ public class PlayerHealth : MonoBehaviour {
         UpdateHearts();
     }
 
-    public void TakeDamage(int damage, Vector2 enemyPosition, bool isMelee)
+    public void TakeDamage(int damage, Transform enemy, bool isMelee)
     {
-        float enemyToPlayerX = transform.position.x - enemyPosition.x;
+        float enemyToPlayerX = transform.position.x - enemy.transform.position.x;
         if (isMelee && anim.GetBool("Shielding") && (enemyToPlayerX / Mathf.Abs(enemyToPlayerX) != transform.localScale.x))
         {
             if (damage / shieldAbsorb > 0)

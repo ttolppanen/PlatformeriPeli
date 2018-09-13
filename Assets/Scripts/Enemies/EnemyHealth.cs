@@ -5,6 +5,14 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour {
 
     public int health;
+    public bool isAlive;
+    public float dieingForce;
+    public Material dissolveMat;
+
+    private void Start()
+    {
+        isAlive = true;
+    }
 
     public void TakeDamage(int damage)
     {
@@ -15,7 +23,32 @@ public class EnemyHealth : MonoBehaviour {
         }
         if (health <= 0)
         {
-            Destroy(gameObject);
+            isAlive = false;
+            Kill();
+        }
+    }
+
+    void Kill()
+    {
+        
+        foreach (Collider2D coll in GetComponents<Collider2D>())
+        {
+            Destroy(coll);
+        }
+        Destroy(transform.GetChild(0).gameObject);
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = -0.1f;
+        Vector2 directionFromPlayer = transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
+        directionFromPlayer.y = 0;
+        rb.velocity = directionFromPlayer * dieingForce;
+
+        dissolveMat.SetFloat("timeSinceLevelLoaded", Time.timeSinceLevelLoad);
+        GetComponent<SpriteRenderer>().material = dissolveMat;
+        Destroy(gameObject, 5);
+        foreach (ParticleSystem smoke in transform.GetComponentsInChildren<ParticleSystem>())
+        {
+            smoke.Play();
         }
     }
 }

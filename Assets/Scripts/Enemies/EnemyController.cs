@@ -8,22 +8,25 @@ public class EnemyController : MonoBehaviour {
     public float maxSpeed;
     public float followDistance;
     public float hittingDistance;
+    public Collider2D hitBox;
     public int damage;
     Transform player;
     Rigidbody2D rb;
     Animator anim;
     Vector2 spawnPoint;
+    EnemyHealth ehScript;
 
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
         spawnPoint = transform.position;
         anim = GetComponent<Animator>();
+        ehScript = GetComponent<EnemyHealth>();
 	}
 	
 	
 	void Update () {
-        if (PauseMenu.instance.isPaused)
+        if (PauseMenu.instance.isPaused || !ehScript.isAlive)
         {
             return;
         }
@@ -39,13 +42,12 @@ public class EnemyController : MonoBehaviour {
             if (directionToPlayer.x >= 0)
             {
                 rb.AddForce(acceleration * rb.mass * Time.deltaTime * Vector2.right);
-                transform.localScale = Vector3.one;
             }
             else
             {
                 rb.AddForce(acceleration * rb.mass * Time.deltaTime * Vector2.left);
-                transform.localScale = new Vector3(-1, 1, 1);
             }
+            FaceRightDirection(directionToPlayer);
         }
 
         //Max speed....
@@ -62,6 +64,7 @@ public class EnemyController : MonoBehaviour {
         if (directionToPlayer.magnitude <= hittingDistance)
         {
             anim.SetBool("Hitting", true);
+            FaceRightDirection(directionToPlayer);
         }
         else
         {
@@ -72,15 +75,19 @@ public class EnemyController : MonoBehaviour {
     {
         if (collision.transform.tag == "Player")
         {
-            collision.transform.GetComponent<PlayerHealth>().TakeDamage(damage, transform.position, false);
+            collision.transform.GetComponent<PlayerHealth>().TakeDamage(damage, transform, false);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void FaceRightDirection(Vector2 directionToPlayer)
     {
-        if (collision.tag == "Player")
+        if (directionToPlayer.x >= 0)
         {
-            collision.GetComponent<PlayerHealth>().TakeDamage(damage, transform.position, true);
+            transform.localScale = Vector3.one;
+        }
+        else
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
         }
     }
 }

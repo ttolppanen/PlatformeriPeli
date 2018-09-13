@@ -5,7 +5,7 @@ using UnityEngine;
 public class Throwing : MonoBehaviour {
 
     public float angle;
-    public float throwingTime;
+    //public float throwingTime;
     public float maxThrowingVelocity;
     public GameObject ammo;
     GameObject player;
@@ -29,26 +29,27 @@ public class Throwing : MonoBehaviour {
         {
             realAngle = Mathf.PI - angle;
         }
-
+        /*
         time += Time.deltaTime;
         if (time > throwingTime)
         {
             time = 0;
             Throw();
-        }
+        }*/
 	}
 
-    void Throw() //NaN käsittely... Max nopeus käsittely....
+    public void Throw()
     {
         Vector2 toPlayer = player.transform.position - transform.position;
         Vector2 playerSpeed = player.GetComponent<Rigidbody2D>().velocity;
 
         float a = Mathf.Pow(Mathf.Cos(realAngle), 2) * toPlayer.y - toPlayer.x * 0.5f * Mathf.Sin(2 * realAngle);
-        float b = Mathf.Cos(realAngle) * playerSpeed.y * toPlayer.x - 2 * Mathf.Cos(realAngle) * toPlayer.y * playerSpeed.x - playerSpeed.x * toPlayer.x * Mathf.Sin(realAngle);
+        float b = Mathf.Cos(realAngle) * playerSpeed.y * toPlayer.x - 2 * Mathf.Cos(realAngle) * toPlayer.y * playerSpeed.x + playerSpeed.x * toPlayer.x * Mathf.Sin(realAngle);
         float c = Mathf.Pow(playerSpeed.x, 2) * toPlayer.y - playerSpeed.x * playerSpeed.y * toPlayer.x - 0.5f * Physics2D.gravity.y * Mathf.Pow(toPlayer.x , 2); //g laskuissa positiivinen, tässä g on vektorinkomponentti, joten -, siitä - tuohon loppuunnnn
-        float throwingVelocity = Functions.SecondDegreeSolver(a, -b, c, false);
+        float throwingVelocity = Functions.SecondDegreeSolver(a, b, c, false);
 
-        if (!float.IsNaN(throwingVelocity)) {
+        if (!float.IsNaN(throwingVelocity))
+        {
             if (throwingVelocity >= maxThrowingVelocity)
             {
                 throwingVelocity = maxThrowingVelocity;

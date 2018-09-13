@@ -13,10 +13,17 @@ public class Ammo : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
     }
 
+    private void Update()
+    {
+        float rotation = Mathf.Atan2(rb.velocity.y, rb.velocity.x);
+        transform.rotation = Quaternion.Euler(0, 0, rotation * Mathf.Rad2Deg);
+    }
+
     private void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.tag == "Player")
         {
+            Destroy(GetComponent<Collider2D>());
             if (coll.GetComponent<Animator>().GetBool("Shielding"))
             {
                 Vector2 playerToAmmo = transform.position - coll.transform.position;
@@ -27,7 +34,8 @@ public class Ammo : MonoBehaviour {
                 }
             }
             //Take damage
-            coll.GetComponent<PlayerHealth>().TakeDamage(damage, transform.position, false);
+            coll.GetComponent<PlayerHealth>().TakeDamage(damage, transform, false);
+            Destroy(gameObject, 5);
         }
     }
 }
