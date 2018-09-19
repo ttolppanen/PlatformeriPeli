@@ -8,6 +8,7 @@ public class Throwing : MonoBehaviour {
     //public float throwingTime;
     public float maxThrowingVelocity;
     public GameObject ammo;
+    public Transform ammoSpawnPoint;
     GameObject player;
     float realAngle;
     float time;
@@ -40,7 +41,7 @@ public class Throwing : MonoBehaviour {
 
     public void Throw()
     {
-        Vector2 toPlayer = player.transform.position - transform.position;
+        Vector2 toPlayer = player.transform.position - ammoSpawnPoint.position;
         Vector2 playerSpeed = player.GetComponent<Rigidbody2D>().velocity;
 
         float a = Mathf.Pow(Mathf.Cos(realAngle), 2) * toPlayer.y - toPlayer.x * 0.5f * Mathf.Sin(2 * realAngle);
@@ -54,7 +55,7 @@ public class Throwing : MonoBehaviour {
             {
                 throwingVelocity = maxThrowingVelocity;
             }
-            GameObject ammoInstance = Instantiate(ammo, transform.position, ammo.transform.rotation);
+            GameObject ammoInstance = Instantiate(ammo, ammoSpawnPoint.position, ammo.transform.rotation);
             ammoInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(realAngle), Mathf.Sin(realAngle)) * throwingVelocity;
         }
     }

@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 50488341463503490}
   - component: {fileID: 61937782797150216}
   - component: {fileID: 114496482773250482}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Stickman
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1555,7 +1555,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 1, g: 1, b: 1, a: 0.79607844}
         key1: {r: 1, g: 1, b: 1, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -1571,9 +1571,9 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 24719
-        atime1: 40432
-        atime2: 0
+        atime0: 14180
+        atime1: 46373
+        atime2: 46373
         atime3: 0
         atime4: 0
         atime5: 0
@@ -6097,7 +6097,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 1, g: 1, b: 1, a: 0.79607844}
         key1: {r: 1, g: 1, b: 1, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -6113,9 +6113,9 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 24719
-        atime1: 40432
-        atime2: 0
+        atime0: 14180
+        atime1: 46373
+        atime2: 46373
         atime3: 0
         atime4: 0
         atime5: 0
@@ -10639,7 +10639,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 1, g: 1, b: 1, a: 0.79607844}
         key1: {r: 1, g: 1, b: 1, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -10655,9 +10655,9 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 24719
-        atime1: 40432
-        atime2: 0
+        atime0: 14180
+        atime1: 46373
+        atime2: 46373
         atime3: 0
         atime4: 0
         atime5: 0
