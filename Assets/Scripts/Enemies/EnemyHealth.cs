@@ -50,7 +50,7 @@ public class EnemyHealth : MonoBehaviour {
         Destroy(gameObject, 5);
         foreach (ParticleSystem smoke in transform.GetComponentsInChildren<ParticleSystem>())
         {
-            smoke.Play();
+            //smoke.Play();
         }
     }
 }
