@@ -10,11 +10,14 @@ public class EnemyController : MonoBehaviour {
     public float hittingDistance;
     public Collider2D hitBox;
     public int damage;
+    float movementForce;
+    Vector2 movementVector; //Yleinen voimaaaaa kato playercontrolleri.
     Transform player;
     Rigidbody2D rb;
     Animator anim;
     Vector2 spawnPoint;
     EnemyHealth ehScript;
+    Friction fs; //Kitka scripti
 
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -22,7 +25,9 @@ public class EnemyController : MonoBehaviour {
         spawnPoint = transform.position;
         anim = GetComponent<Animator>();
         ehScript = GetComponent<EnemyHealth>();
-	}
+        movementForce = rb.mass * (acceleration + GameManager.instance.globalFriction);
+        fs = GetComponent<Friction>();
+    }
 	
 	
 	void Update () {
@@ -38,14 +43,15 @@ public class EnemyController : MonoBehaviour {
             rb.velocity = Vector2.zero;
             return;
         }
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Hitting")) { //jos ei lyödä niin liikutaan...
+        movementVector = Vector2.zero;
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Hitting") && fs.isGrounded) { //jos ei lyödä niin liikutaan...
             if (directionToPlayer.x >= 0)
             {
-                rb.AddForce(acceleration * rb.mass * Time.deltaTime * Vector2.right);
+                movementVector = movementForce * Vector2.right;
             }
             else
             {
-                rb.AddForce(acceleration * rb.mass * Time.deltaTime * Vector2.left);
+                movementVector = movementForce * Vector2.left;
             }
             FaceRightDirection(directionToPlayer);
         }
@@ -71,6 +77,12 @@ public class EnemyController : MonoBehaviour {
             anim.SetBool("Hitting", false);
         }
     }
+
+    private void FixedUpdate()
+    {
+        rb.AddForce(movementVector);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.tag == "Player")

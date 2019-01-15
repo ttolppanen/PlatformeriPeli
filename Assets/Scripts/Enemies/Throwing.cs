@@ -22,6 +22,11 @@ public class Throwing : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        if (player == null)
+        {
+            return;
+        }
+
         if ((player.transform.position.x - transform.position.x) >= 0)
         {
             realAngle = angle;
@@ -41,6 +46,11 @@ public class Throwing : MonoBehaviour {
 
     public void Throw()
     {
+        if (player == null)
+        {
+            return;
+        }
+
         Vector2 toPlayer = player.transform.position - ammoSpawnPoint.position;
         Vector2 playerSpeed = player.GetComponent<Rigidbody2D>().velocity;
 

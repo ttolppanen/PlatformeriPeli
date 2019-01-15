@@ -7,16 +7,21 @@ public class PlayerController : MonoBehaviour {
     public float acceleration;
     public float maxSpeed;
     public float jumpForce;
-    public Vector2 groundCheckBoxSize;
-    public float groundCheckDistance;
 
+    Friction fs; //Friction scripti...
     Rigidbody2D rb;
     Animator anim;
+    float movementForce;
+    float airForce;
+    Vector2 movementVector; //Yleinen vektori mihin on laskettu kaikki liikkumiisen tarvittavat jutut.
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        fs = GetComponent<Friction>();
+        movementForce = rb.mass * (acceleration + GameManager.instance.globalFriction);
+        airForce = rb.mass * acceleration;
     }
 
     void Update ()
@@ -26,11 +31,20 @@ public class PlayerController : MonoBehaviour {
             return;
         }
 
+        movementVector = Vector2.zero;
+
         if (Input.GetKey(KeyCode.RightArrow))
         {
             if (!Input.GetKey(KeyCode.C))
             {
-                rb.AddForce(Vector2.right * acceleration * Time.deltaTime * rb.mass);
+                if (!fs.isGrounded)
+                {
+                    movementVector = Vector2.right * airForce;
+                }
+                else
+                {
+                    movementVector = Vector2.right * movementForce;
+                }
             }
             if (transform.localScale.x == -1)
             {
@@ -41,7 +55,14 @@ public class PlayerController : MonoBehaviour {
         {
             if (!Input.GetKey(KeyCode.C))
             {
-                rb.AddForce(Vector2.left * acceleration * Time.deltaTime * rb.mass);
+                if (!fs.isGrounded)
+                {
+                    movementVector = Vector2.left * airForce;
+                }
+                else
+                {
+                    movementVector = Vector2.left * movementForce;
+                }
             }
             if (transform.localScale.x == 1)
             {
@@ -50,7 +71,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Jumping
-        if (Input.GetKeyDown(KeyCode.UpArrow) && CheckIfGrounded())
+        if (Input.GetKeyDown(KeyCode.UpArrow) && fs.isGrounded)
         {
             rb.AddForce(Vector2.up * jumpForce * rb.mass, ForceMode2D.Impulse);
         }
@@ -91,16 +112,8 @@ public class PlayerController : MonoBehaviour {
         }
 	}
 
-    bool CheckIfGrounded()
+    private void FixedUpdate()
     {
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position + new Vector3(0, -1.095f, 0), groundCheckBoxSize, 0, Vector2.down, groundCheckDistance); // JOS HYPPY EI TOIMI KUN NIIN MATKA VARMAAN VAIHTUNU TÄSSÄ KUVAN VAIHDON YHTEYDESSÄ
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.transform.tag == "Ground")
-            {
-                return true;
-            }
-        }
-        return false;
+        rb.AddForce(movementVector);
     }
 }

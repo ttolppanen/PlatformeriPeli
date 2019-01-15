@@ -8,6 +8,8 @@ public class PlayerHealth : MonoBehaviour {
     public int shieldAbsorb;
     public float knockBackForce;
     public GameObject[] hearts = new GameObject[1];
+    public GameObject halfHeart;
+    public float damageHeartSpeed;
     Rigidbody2D rb;
     Animator anim;
 
@@ -26,6 +28,7 @@ public class PlayerHealth : MonoBehaviour {
             if (damage / shieldAbsorb > 0)
             {
                 health -= damage / shieldAbsorb;
+                StartCoroutine(SpawnDamageHearts(damage / shieldAbsorb));
                 if (GetComponent<DMGFlash>() == null)
                 {
                     gameObject.AddComponent<DMGFlash>();
@@ -44,6 +47,7 @@ public class PlayerHealth : MonoBehaviour {
         }
         else
         {
+            StartCoroutine(SpawnDamageHearts(damage));
             health -= damage;
             if (GetComponent<DMGFlash>() == null)
             {
@@ -78,6 +82,30 @@ public class PlayerHealth : MonoBehaviour {
             else
             {
                 hearts[i].SetActive(false);
+            }
+        }
+    }
+
+    IEnumerator SpawnDamageHearts(int damage)
+    {
+        bool shouldSpawnRight = true;
+        int heartSpawnAmount = Mathf.Min(health, damage);
+        int startHealth = health;
+        for (int i = 0; i < heartSpawnAmount; i++)
+        {
+            GameObject halfHeartInstance = Instantiate(halfHeart, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+            Rigidbody2D heartRb = halfHeartInstance.GetComponent<Rigidbody2D>();
+            heartRb.velocity = damageHeartSpeed * new Vector2(Random.Range(-1f, 1f), 1);
+            heartRb.angularVelocity = Random.Range(0, 3f) * 360;
+            Destroy(halfHeartInstance, 1.5f);
+            if (!shouldSpawnRight)
+            {
+                halfHeartInstance.transform.localScale = new Vector3(-1, 1, 1);
+            }
+            shouldSpawnRight = !shouldSpawnRight;
+            if (damage < startHealth)
+            {
+                yield return new WaitForSeconds(0.02f);
             }
         }
     }

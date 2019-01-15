@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public float globalFriction;
+
     //Yleisiä resoursseja
     public  Material flashMat;
 

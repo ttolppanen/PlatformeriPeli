@@ -36,6 +36,8 @@ public class EnemyHealth : MonoBehaviour {
             Destroy(coll);
         }
         Destroy(transform.GetChild(0).gameObject);
+        Destroy(GetComponent<Friction>());
+        Destroy(GetComponent<EnemyController>());
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = -0.1f;
