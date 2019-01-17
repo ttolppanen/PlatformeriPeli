@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    static public PlayerController instance;
+
     public float acceleration;
     public float maxSpeed;
     public float jumpForce;
@@ -14,6 +16,18 @@ public class PlayerController : MonoBehaviour {
     float movementForce;
     float airForce;
     Vector2 movementVector; //Yleinen vektori mihin on laskettu kaikki liikkumiisen tarvittavat jutut.
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {

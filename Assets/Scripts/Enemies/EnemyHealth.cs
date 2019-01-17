@@ -41,7 +41,7 @@ public class EnemyHealth : MonoBehaviour {
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = -0.1f;
-        Vector2 directionFromPlayer = transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
+        Vector2 directionFromPlayer = transform.position - PlayerController.instance.transform.position;
         directionFromPlayer.y = 0;
         rb.velocity = directionFromPlayer * dieingForce;
 
